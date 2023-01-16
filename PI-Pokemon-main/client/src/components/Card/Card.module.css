@@ -1,0 +1,48 @@
+.container {
+    border: 1px solid rgb(112, 112, 112);
+    background-color: rgb(184, 184, 184);
+    border-radius: 10px;
+    width: 180px;
+    padding: 10px;
+    box-shadow: 0 0 15px black;
+    margin: 10px;
+}
+
+
+
+.container h2 {
+    color: rgb(77, 77, 77);
+}
+
+.container span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 1px;
+}
+
+.image {
+    width: 95%;
+    border: 1px solid rgb(112, 112, 112);
+    border-radius: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttonContainer button {
+    margin: 3px 3px 0 0;
+    background-color: rgb(216, 69, 69);
+    color: whitesmoke;
+    border: none;
+    border-radius: 3px;
+}
+
+.data {
+    display: flex;
+    justify-content: space-around;
+    color: rgb(97, 97, 97);
+}

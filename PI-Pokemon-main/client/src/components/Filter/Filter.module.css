@@ -1,0 +1,32 @@
+.container{
+    display: flex;
+    justify-content: center;
+    
+}
+.container select {
+    border-radius: 100px;
+    height: 30px;
+    width: 40%;
+}
+.ord{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 3px;
+    align-items: center;
+
+}
+
+.form{
+    align-items: center;
+}
+
+.btn {
+    height: 30px;
+    background-color: rgb(110, 110, 110);
+    border-radius: 100px;
+    color: white;
+    width: 30%;
+    
+    }
+
