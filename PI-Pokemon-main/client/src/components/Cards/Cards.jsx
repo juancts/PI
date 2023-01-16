@@ -11,7 +11,7 @@ import Filter from "../Filter/Filter";
 import FilterApiBd from "../Filter/FilterApiBd";
 export default function Cards() {
   const [page, setPage] = useState(1);
-  const [forPage, setforPage] = useState(12);
+  const [forPage, setforPage] = useState(8);
 
   const dispatch = useDispatch();
   const pokemones = useSelector((state) => state.filteredPokemones);
@@ -25,16 +25,17 @@ export default function Cards() {
   return (
     <div>
       <NavBar />
+      <div className={styles.child}>
       <div>
         <Order pokemones = {pokemones}/>
-      </div>
-      <div>
+      </div>    
       <div className={styles.filter}>
         <Filter />
       </div>
       <div className={styles.filter}>
         <FilterApiBd />
       </div>
+      
       </div>
       <div className={styles.container}>
         {pokemones &&

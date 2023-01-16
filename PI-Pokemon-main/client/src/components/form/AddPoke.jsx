@@ -124,10 +124,10 @@ export default function AddPoke() {
         <NavBar />
       </div>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form}onSubmit={handleSubmit}>
           <header>
-            <h2>Your Own Pokemon</h2>
-            <p>Insert a name, select its stats and choose the types!</p>
+            <h2>Add a new Pokemon</h2>
+            <p>Please, insert the name and it stats</p>
           </header>
           <label>Nombre:</label>
           <input

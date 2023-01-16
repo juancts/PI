@@ -4,20 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./Order.module.css";
 import { useEffect, useState } from "react";
 
-export default function Order({pokemones}) {
-  
+export default function Order({ pokemones }) {
   const dispatch = useDispatch();
-  
-  console.log("ORDER:", pokemones)
 
+  console.log("ORDER:", pokemones);
 
   function onSelectChange(e) {
     e.preventDefault();
     dispatch(sortPokemones(e.target.value, pokemones));
   }
-
-  
-
 
   return (
     <div className={styles.container}>

@@ -8,7 +8,7 @@ export default function Card(props) {
 
        <div className={styles.container}>
           <div className={styles.buttonContainer}>
-             <button>X</button>
+             <button>✔</button>
           </div>
           <Link to={`/details/${props.id}`}>
           <span>

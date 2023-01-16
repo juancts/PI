@@ -24,6 +24,11 @@
     color: white;
     width: 50%;
     }
+.container button:hover{
+    background-color: #0071e2;
+    cursor: pointer;
+}
+
 .container form {
     align-items: center;
 ;}

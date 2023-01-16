@@ -212,7 +212,9 @@ export function getType(id, pokes) {
   pokes.map((e) => {
     if (id === e.id) typ.push(e.types);
   });
+  console.log(typ)
   return typ;
+  
 }
 
 //ADD TYPES

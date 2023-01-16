@@ -20,7 +20,7 @@ export default function FilterApiBd() {
   return (
     <div className={styles.container}>
       <div className={styles.ord}>
-        <h4>From DB or Api?</h4>
+        <h4>DB or Api?</h4>
         <form className={styles.form} onSubmit={onSubmit}>
           <select name="select" onChange={onSelectChange}>
             <option value="database">Database</option>
