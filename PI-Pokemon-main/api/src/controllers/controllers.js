@@ -69,7 +69,7 @@ async function getAllPokemons(req, res, next) {
     });
 
     allPokemones = [...allPokesApi, ...pokesDb];
-    res.status(201).send(allPokemones);
+    res.status(200).send(allPokemones);
   } catch (error) {
     console.error("Error in getAllPokemons:", error.message);
   }
@@ -114,7 +114,7 @@ async function getPokemonById(req, res, next) {
             fromDb: false,
           };
         });
-      res.status(201).send(pokemon);
+      res.status(200).send(pokemon);
     }
     //console.log(pokemon);
     //res.send(pokemon)
@@ -163,10 +163,10 @@ async function getPokemonByName(req, res, next) {
             fromDb: false,
           };
         });
-      return res.status(201).send(pokemonApi);
+      return res.status(200).send(pokemonApi);
     }
 
-    res.status(201).send(pokemonDb);
+    res.status(200).send(pokemonDb);
   } catch (error) {
     console.error("Pokemon no existe:", error.message);
   }
@@ -191,7 +191,7 @@ async function getPokeTypes(req, res, next) {
       });
     });
     poketpedb = await Type.findAll();
-    res.send(poketpedb)
+    res.status(200).send(poketpedb)
     
   } catch (error) {
     console.error("Error in getTypesPokemons:", error.message);
@@ -230,11 +230,8 @@ async function createPokemones(req, res, next) {
         where: {
           name: types,
         },
-      }).then((res) => {
-        JSON.stringify(res);
-        newPokemon.addType(res);
-      });
-      res.status(201).send(newPokemon);
+      }).then((res) => newPokemon.addType(res));
+      res.status(200).send(newPokemon);
       return "Your pokemon was successfully created";
     } catch (error) {
       console.error("Error in createPokemon:", error.message);
