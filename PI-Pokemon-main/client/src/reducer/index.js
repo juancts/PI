@@ -72,29 +72,37 @@ export default function reducer(state = initialState, { type, payload }) {
       };
     case FILTER_POKEMONES_TYPE:
       let result = [] 
-      state.filteredPokemones.map( (e)=>{if( e.types.includes(payload)){result.push(e)}})
+      state.pokemones.map( (e)=>{if( e.types.includes(payload)){result.push(e)}})
                                  
-      if (!result.length) window.alert("There are no pokemones with this type");
-
-      console.log(result)
-
+      if (!result.length) {window.alert("Sorry, there are no pokemones with this type")
+      return{
+        ...state,
+      }
+    }else{
       return {
         ...state,
         filteredPokemones: result,
       };
+    }
+
 
     case FILTER_POKEMONES_DB:
       if (payload === "database") {
-        let result = state.filteredPokemones.filter((e) => e.fromDb === true);
-        if (!result.length) return window.alert("there are no pokemons on the Db");
+        let result = state.pokemones.filter((e) => e.fromDb === true);
+        if (!result.length) {window.alert("Sorry, there are no pokemons on the Db")
+        return{
+          ...state,
+        }
+      }else{
         return {
           ...state,
           filteredPokemones: result,
         };
       }
+      }
     case FILTER_POKEMONES_API:
       if (payload === "api") {
-        let result = state.filteredPokemones.filter((e) => e.fromDb === false);
+        let result = state.pokemones.filter((e) => e.fromDb === false);
         if (!result.length) window.alert("No hay pokemones Cargados");
         return {
           ...state,

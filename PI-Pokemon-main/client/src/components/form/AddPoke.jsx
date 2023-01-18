@@ -5,7 +5,7 @@ import NavBar from "../Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import "./Form.modules.css";
 import { validate } from "./validate";
-import { addTypes } from "../../actions/Actions";
+import { addTypes, postPokemons } from "../../actions/Actions";
 import styles from "./Form.modules.css";
 
 export default function AddPoke() {
@@ -37,6 +37,7 @@ export default function AddPoke() {
     attack: "",
     defense: "",
     speed: "",
+    types:"",
     img: "",
   });
 
@@ -48,7 +49,7 @@ export default function AddPoke() {
     var checkbox = e.target;
     if (checkbox.checked) {
       selectedItems.push(checkbox.value);
-    } else {
+      } else {
       var index = selectedItems.indexOf(checkbox.value);
       selectedItems.splice(index, 1);
     }
@@ -57,7 +58,12 @@ export default function AddPoke() {
     setInputs({
       ...inputs,
       [e.target.name]: selectedItems,
-    });
+      });
+    setErrors(
+      validate({
+        ...inputs,
+        [e.target.name]: selectedItems,
+      }))
   }
 
   function handleChange(e) {
@@ -75,37 +81,53 @@ export default function AddPoke() {
     console.log(inputs);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!Object.keys(errors).length) {
-      window.alert("Muchas gracias, completado correctamente");
-      axios.post("http://localhost:3001/api/pokemones/", inputs).then(() => {
-        setInputs({
-          name: "",
-          height: "",
-          weight: "",
-          health: "",
-          attack: "",
-          defense: "",
-          speed: "",
-          img: "",
-        });
-        setErrors({
-          name: "",
-          height: "",
-          weight: "",
-          health: "",
-          attack: "",
-          defense: "",
-          speed: "",
-          img: "",
-        });
-        history.push("/allPokes");
-      });
-    } else {
-      window.alert("Debes corregir los errores");
+  async function postPokemons(inputs){
+    try {
+     let poke = await axios.post("http://localhost:3001/api/pokemones/", inputs)
+     window.alert("Muchas gracias, completado correctamente");
+     console.log("POKE FROM CREATE POKE:", poke.data)
+    } catch (error) {
+      console.log(error)
+      window.alert(error, "Error in create Pokemon")
     }
+  
   }
+
+  function handleSubmit(e) {
+    
+      e.preventDefault();
+      if (!Object.keys(errors).length) {
+        console.log("INPUTS:", inputs)
+        postPokemons(inputs)
+                   
+          setInputs({
+            name: "",
+            height: "",
+            weight: "",
+            health: "",
+            attack: "",
+            defense: "",
+            speed: "",
+            types:[],
+            img: "",
+          });
+          setErrors({
+            name: "",
+            height: "",
+            weight: "",
+            health: "",
+            attack: "",
+            defense: "",
+            speed: "",
+            img: "",
+          });
+          history.push("/Home");
+        
+      }else {
+        window.alert("You have some errors in the form, please fix them");
+      }
+    }
+      
 
   return (
     <div className={styles.container}>

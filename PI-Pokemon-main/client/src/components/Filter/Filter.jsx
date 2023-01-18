@@ -38,7 +38,7 @@ export default function Filter() {
         <form className={styles.form} onSubmit={onSubmit}>
           <select value = {filter} name="select" onChange={onSelectChange}>
             <option value="" selected>Select</option>
-            {typesApi && typesApi.map((e,i) => <option key={i} value={e}>{e}</option>)}
+            {typesApi && typesApi.map((e,i) => <option key={i} name = "type" value={e}>{e}</option>)}
           </select>
           <p>{looking} {looking ? "Pokemons" : ""}</p>
           <button className={styles.btn} type="submit" value="Filter">
