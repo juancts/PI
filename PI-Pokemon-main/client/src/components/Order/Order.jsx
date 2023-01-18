@@ -4,22 +4,34 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./Order.module.css";
 import { useEffect, useState } from "react";
 
-export default function Order({ pokemones }) {
+export default function Order() {
   const dispatch = useDispatch();
-
-  console.log("ORDER:", pokemones);
+  const [opc, setOpc] = useState('')
+  const orderchanged = useSelector((state) => state.orderchanged);
+  
 
   function onSelectChange(e) {
     e.preventDefault();
-    dispatch(sortPokemones(e.target.value, pokemones));
+    setOpc(e.target.value);
+    if(e.target.value === ""){
+      setOpc("")
+    }else{
+      console.log("soy opc:", opc);
+      console.log("soy etarget:", e.target.value);
+      dispatch(sortPokemones(e.target.value));
+    }
+    //setOpc("");
   }
+
+
 
   return (
     <div className={styles.container}>
       <div className={styles.ord}>
         <h4>Order by name</h4>
 
-        <select name="name" onChange={onSelectChange}>
+        <select value={opc} name="name" onChange={onSelectChange}>
+          <option value="">orden alf</option>
           <option value={AZ}>A-Z</option>
           <option value={ZA}>Z-A</option>
         </select>
@@ -27,10 +39,12 @@ export default function Order({ pokemones }) {
       <div className={styles.ord}>
         <h4>Order by attack</h4>
 
-        <select name="attack" onChange={onSelectChange}>
+        <select value={opc} name="attack" onChange={onSelectChange}>
+          <option value="">order atk</option>
           <option value={ATTACKASC}>Attack asc</option>
           <option value={ATTACKDSC}>Attack dsc</option>
         </select>
+        
       </div>
     </div>
   );

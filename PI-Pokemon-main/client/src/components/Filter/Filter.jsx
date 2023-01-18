@@ -9,6 +9,7 @@ import styles from "./Filter.module.css";
 export default function Filter() {
   //Seteo los hooks de useState
   const [filter, setFilter] = useState("");
+  const  [looking, setLooking] = useState("");
   const typesApi = useSelector((state) => state.types);
   const dispatch = useDispatch();
   
@@ -17,11 +18,13 @@ export default function Filter() {
   function onSubmit(e) {
     e.preventDefault();
     dispatch(filterPokemones(filter));
+    setFilter("");
     
   }
 
   function onSelectChange(e) {
     setFilter(e.target.value);
+    setLooking(e.target.value);
   }
 
   useEffect(() => {
@@ -33,9 +36,11 @@ export default function Filter() {
       <div className={styles.ord}>
         <h4>Filter By Type</h4>
         <form className={styles.form} onSubmit={onSubmit}>
-          <select name="select" onChange={onSelectChange}>
-            {typesApi && typesApi.map((e) => <option value={e}>{e}</option>)}
+          <select value = {filter} name="select" onChange={onSelectChange}>
+            <option value="" selected>Select</option>
+            {typesApi && typesApi.map((e,i) => <option key={i} value={e}>{e}</option>)}
           </select>
+          <p>{looking} {looking ? "Pokemons" : ""}</p>
           <button className={styles.btn} type="submit" value="Filter">
             Filter
           </button>

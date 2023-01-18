@@ -9,33 +9,29 @@ import NavBar from "../Navbar/Navbar";
 import Pagination from "../pagination/Pagination";
 import Filter from "../Filter/Filter";
 import FilterApiBd from "../Filter/FilterApiBd";
+
 export default function Cards() {
   const [page, setPage] = useState(1);
   const [forPage, setforPage] = useState(8);
-
+  const orderchanged = useSelector((state) => state.orderchanged);
   const dispatch = useDispatch();
   const pokemones = useSelector((state) => state.filteredPokemones);
 
   const maxPages = pokemones.length / forPage;
 
-  useEffect(() => {
-    dispatch(getAllPoke());
-  }, [dispatch]);
-
   return (
     <div>
       <NavBar />
       <div className={styles.child}>
-      <div>
-        <Order pokemones = {pokemones}/>
-      </div>    
-      <div className={styles.filter}>
-        <Filter />
-      </div>
-      <div className={styles.filter}>
-        <FilterApiBd />
-      </div>
-      
+        <div>
+          <Order pokemones={pokemones} />
+        </div>
+        <div className={styles.filter}>
+          <Filter />
+        </div>
+        <div className={styles.filter}>
+          <FilterApiBd />
+        </div>
       </div>
       <div className={styles.container}>
         {pokemones &&

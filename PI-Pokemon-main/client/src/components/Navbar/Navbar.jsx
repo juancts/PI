@@ -10,14 +10,14 @@ export default function NavBar() {
         <nav>
           <ul>
             <li>
-              <Link to="/allPokes">Poke Home </Link>
+              <Link to="/Home">Poke Home</Link>
             </li>
             <li>
-              <Link to="/addpokes">Add Pokemon </Link>
+              <Link to="/allpokes">All Pokemon</Link>
             </li>
-            {/* <li>
-              <Link to="/updatepokes">Update Pokemon </Link>
-            </li> */}
+           <li>
+              <Link to="/addpokes">Add Poke</Link>
+            </li>
             {/* <li>
               <Link to="/filter">Filter Pokemon </Link>
             </li> */}

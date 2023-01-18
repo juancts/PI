@@ -9,7 +9,7 @@ import { addTypes } from "../../actions/Actions";
 import styles from "./Form.modules.css";
 
 export default function AddPoke() {
-  const [pokemon, setPokemon] = useState({});
+  // const [pokemon, setPokemon] = useState({});
   const types = useSelector((state) => state.types);
   const dispatch = useDispatch();
 
@@ -42,23 +42,18 @@ export default function AddPoke() {
 
   let history = useHistory();
 
-  
   const [selectedItems, setSelectedItems] = useState([]);
 
   function handleCheckboxChange(e) {
     var checkbox = e.target;
     if (checkbox.checked) {
-      setSelectedItems([...selectedItems, checkbox.value])
-      //selectedItems.push(checkbox.value);
+      selectedItems.push(checkbox.value);
     } else {
       var index = selectedItems.indexOf(checkbox.value);
       selectedItems.splice(index, 1);
     }
     console.log(selectedItems);
-    setPokemon({
-      ...pokemon,
-      [e.target.name]: selectedItems,
-    });
+
     setInputs({
       ...inputs,
       [e.target.name]: selectedItems,
@@ -66,31 +61,25 @@ export default function AddPoke() {
   }
 
   function handleChange(e) {
-    setPokemon({
-        ...pokemon,
-        [e.target.name]: e.target.value,
-      });
-
-      setInputs({
+    setInputs({
+      ...inputs,
+      [e.target.name]: e.target.value,
+    });
+    console.log("INPUTS TYPES:", inputs.types);
+    setErrors(
+      validate({
         ...inputs,
         [e.target.name]: e.target.value,
-      });
-      console.log("INPUTS TYPES:", inputs.types);
-      setErrors(
-        validate({
-          ...inputs,
-          [e.target.name]: e.target.value,
-        })
-      );
-      console.log(pokemon);
-    
+      })
+    );
+    console.log(inputs);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!Object.keys(errors).length) {
       window.alert("Muchas gracias, completado correctamente");
-      axios.post("http://localhost:3001/api/pokemones/", pokemon).then(() => {
+      axios.post("http://localhost:3001/api/pokemones/", inputs).then(() => {
         setInputs({
           name: "",
           height: "",
@@ -124,7 +113,7 @@ export default function AddPoke() {
         <NavBar />
       </div>
       <div>
-        <form className={styles.form}onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <header>
             <h2>Add a new Pokemon</h2>
             <p>Please, insert the name and it stats</p>
@@ -230,7 +219,12 @@ export default function AddPoke() {
           {types &&
             types.map((type, i) => (
               <div key={i}>
-                <input onChange={handleCheckboxChange} type="checkbox" name="types" value={type} />
+                <input
+                  onChange={handleCheckboxChange}
+                  type="checkbox"
+                  name="types"
+                  value={type}
+                />
                 <label>{type}</label>
               </div>
               // <option key={i} value={type}>
@@ -240,7 +234,7 @@ export default function AddPoke() {
 
           <label>Image:</label>
           <input
-          onChange={handleChange}
+            onChange={handleChange}
             name="img"
             placeholder="Pokemon image..."
             type="text"

@@ -2,63 +2,111 @@
 import {
   GET_POKEMONES,
   SEARCH_POKEMONES,
-  SORT_POKEMONES,
-  FILTER_POKEMONES,
   ADD_TYPES,
   DETAIL_POKEMONES,
+  SORT_POKEMONES_ALF,
+  SORT_POKEMONES_ATK,
+  FILTER_POKEMONES_DB,
+  FILTER_POKEMONES_TYPE,
+  FILTER_POKEMONES_API,
 } from "../actions/types";
+import { ATTACKASC, ATTACKDSC, AZ, ZA } from "../components/Order/types";
 
 const initialState = {
   pokemones: [],
   filteredPokemones: [],
   types: [],
-  pokedetail:[],
+  pokedetail: [],
+  orderchanged: false,
 };
 
 export default function reducer(state = initialState, { type, payload }) {
   switch (type) {
     case GET_POKEMONES:
-      let filteredPokemones = payload;
-      console.log("FILTERED POKES:", filteredPokemones);
-      let toApiTypes = [];
-        filteredPokemones.map((e) => {
-        if (e.fromDb === true) {
-             if (toApiTypes.length) {
-               toApiTypes = [];
-               e.types.map((e) => {
-                toApiTypes.push(e.name);
-              });
-           }
-            e.types = toApiTypes;
-          }
-        });
       return {
         ...state,
         pokemones: payload,
-        filteredPokemones: filteredPokemones,
+        filteredPokemones: payload,
       };
+
     case SEARCH_POKEMONES:
-      return {
-          ...state,
-          filteredPokemones: payload,
-        };
-    case SORT_POKEMONES:
       return {
         ...state,
         filteredPokemones: payload,
       };
 
-    case FILTER_POKEMONES:
+    //SORT POKEMONES
+
+    case SORT_POKEMONES_ALF:
+      let orderedPokemones;
+      if (payload === AZ) {
+        orderedPokemones = state.filteredPokemones.sort((a, b) =>
+          a.name > b.name ? 1 : a.name < b.name ? -1 : 0
+        );
+      } else if (payload === ZA) {
+        orderedPokemones = state.filteredPokemones.sort((a, b) =>
+          a.name > b.name ? -1 : a.name < b.name ? 1 : 0
+        );
+      }
       return {
         ...state,
-        filteredPokemones: payload,
+        filteredPokemones: orderedPokemones,
+        orderchanged: !state.orderchanged,
       };
+
+    case SORT_POKEMONES_ATK:
+      let orderedPokeAtk;
+      if (payload === ATTACKASC) {
+        orderedPokeAtk = state.filteredPokemones.sort((a, b) =>
+          a.attack > b.attack ? 1 : a.attack < b.attack ? -1 : 0
+        );
+      } else if (payload === ATTACKDSC) {
+        orderedPokeAtk = state.filteredPokemones.sort((a, b) =>
+          a.attack > b.attack ? -1 : a.attack < b.attack ? 1 : 0
+        );
+      }
+      return {
+        ...state,
+        filteredPokemones: orderedPokeAtk,
+        orderchanged: !state.orderchanged,
+      };
+    case FILTER_POKEMONES_TYPE:
+      let result = [] 
+      state.filteredPokemones.map( (e)=>{if( e.types.includes(payload)){result.push(e)}})
+                                 
+      if (!result.length) window.alert("There are no pokemones with this type");
+
+      console.log(result)
+
+      return {
+        ...state,
+        filteredPokemones: result,
+      };
+
+    case FILTER_POKEMONES_DB:
+      if (payload === "database") {
+        let result = state.filteredPokemones.filter((e) => e.fromDb === true);
+        if (!result.length) return window.alert("there are no pokemons on the Db");
+        return {
+          ...state,
+          filteredPokemones: result,
+        };
+      }
+    case FILTER_POKEMONES_API:
+      if (payload === "api") {
+        let result = state.filteredPokemones.filter((e) => e.fromDb === false);
+        if (!result.length) window.alert("No hay pokemones Cargados");
+        return {
+          ...state,
+          filteredPokemones: result,
+        };
+      }
     case ADD_TYPES:
       return {
         ...state,
         types: payload,
       };
-      case DETAIL_POKEMONES:
+    case DETAIL_POKEMONES:
       return {
         ...state,
         pokedetail: payload,

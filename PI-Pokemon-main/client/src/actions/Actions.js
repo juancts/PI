@@ -3,32 +3,37 @@ import { AZ, ATTACKASC, ATTACKDSC, ZA } from "../components/Order/types";
 import {
   ADD_TYPES,
   DETAIL_POKEMONES,
-  FILTER_POKEMONES,
+  FILTER_POKEMONES_API,
+  FILTER_POKEMONES_DB,
+  FILTER_POKEMONES_TYPE,
   GET_POKEMONES,
   SEARCH_POKEMONES,
-  SORT_POKEMONES,
+  SORT_POKEMONES_ALF,
+  SORT_POKEMONES_ATK,
 } from "./types";
 
 export function getAllPoke() {
+  let toApiTypes = [];
   return async (dispatch) => {
     await fetch("http://localhost:3001/api/pokemones/")
       .then((res) => res.json())
       .then((data) => {
-        //  let toApiTypes = [];
-        // data.map((e) => {
-        //   if (e.fromDb === true) {
-        //     if (!toApiTypes.length) {
-        //       toApiTypes = [];
-        //       e.types.map((e) => {
-        //         toApiTypes.push(e.name);
-        //       });
-        //     }
-        //     e.types = toApiTypes;
-        //   }
-        // });
-        //console.log("TO API TYPES: ", toApiTypes);
+        console.log("DESDE ACTIONS:", data);
+        let newData = data;
 
-        dispatch({
+        newData = newData.map((e) => {
+          if (e.fromDb === true) {
+            toApiTypes = [];
+            e.types.map((e) => {
+              toApiTypes.push(e.name);
+            });
+            e.types = toApiTypes;
+          }
+          
+          
+        });
+        
+        return dispatch({
           type: GET_POKEMONES,
           payload: data,
         });
@@ -44,6 +49,7 @@ export function searchPokemones(search) {
     await fetch(`http://localhost:3001/api/pokemones/?name=${search}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log("SEARCH FUNCION ACTION:", data);
         let toApiTypes = [];
         if (data.fromDb === true) {
           data.types.map((e) => {
@@ -63,115 +69,94 @@ export function searchPokemones(search) {
   };
 }
 
-export function sortPokemones(order, pokes) {
-  try {
-    return async (dispatch) => {
-      let orderedPokemones = pokes;
-      if (order === ATTACKASC) {
-        orderedPokemones = orderedPokemones.sort((a, b) =>
-          a.attack > b.attack ? 1 : a.attack < b.attack ? -1 : 0
-        );
-        console.log(
-          "ATTACKasc:",
-          orderedPokemones.map((e) => e.attack)
-        );
-        console.log("ATTACKasc:", orderedPokemones);
-      } else {
-        if (order === ATTACKDSC) {
-          orderedPokemones = orderedPokemones.sort((a, b) =>
-            a.attack > b.attack ? -1 : a.attack < b.attack ? 1 : 0
-          );
-          console.log(
-            "ATTACKdsc:",
-            orderedPokemones.map((e) => e.attack)
-          );
-          console.log("ATTACKdsc:", orderedPokemones);
-        }
-      }
-      if (order === AZ) {
-        orderedPokemones = orderedPokemones.sort((a, b) =>
-          a.name > b.name ? 1 : a.name < b.name ? -1 : 0
-        );
-        console.log(
-          "AZ:",
-          orderedPokemones.map((e) => e.name)
-        );
-      } else {
-        if (order === ZA) {
-          orderedPokemones = orderedPokemones.sort((a, b) =>
-            a.name > b.name ? -1 : a.name < b.name ? 1 : 0
-          );
-          console.log(
-            "ZA:",
-            orderedPokemones.map((e) => e.name)
-          );
-        }
-      }
-
-      dispatch({
-        type: SORT_POKEMONES,
-        payload: orderedPokemones,
-      });
+export function sortPokemones(order) {
+  if (order === AZ || order === ZA) {
+    return {
+      type: SORT_POKEMONES_ALF,
+      payload: order,
     };
-  } catch (error) {
-      {
-      console.log(error);
+  } else {
+    return {
+      type: SORT_POKEMONES_ATK,
+      payload: order,
     };
   }
 }
 
-export function filterPokemones(filter) {
-  const URL = "http://localhost:3001/api/pokemones";
-  return async (dispatch) => {
-    await fetch(URL)
-      .then((res) => res.json())
-      .then((data) => {
-        let result = [];
-        if (filter === "database") {
-          let toApiTypes = [];
-          console.log(data);
-          result = data.filter((e) => e.fromDb === true);
-          console.log("result from 1er if", result);
-          result.map((e) => {
-            e.types.map((e) => toApiTypes.push(e.name));
-            e.types = toApiTypes;
-          });
-          //result.map((e)=> e.types = toApiTypes)
+export function filterPokemones(filter){
+  if(filter === "database"){
+    return {
+      type: FILTER_POKEMONES_DB,
+      payload: filter,
+    };
+  }else if(filter === "api"){
+    return {
+      type: FILTER_POKEMONES_API,
+      payload: filter,
+    };
 
-          if (!result.length) window.alert("No hay pokemones en BD");
-          console.log("RESULT FILTER DB API:", result);
-        } else if (filter === "api") {
-          result = data.filter((e) => e.fromDb === false);
-        } else {
-          data.map((e) => {
-            if (e.fromDb === true && e.types.find((n) => n.name === filter)) {
-              result.push(e);
-            }
-            if (e.types.includes(filter)) result.push(e);
-          });
-        }
-
-        if (result) {
-          dispatch({
-            type: FILTER_POKEMONES,
-            payload: result,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  }else{
+    return{
+      type: FILTER_POKEMONES_TYPE,
+      payload: filter,
+    }
+  }
 }
+
+
+// export function filterPokemones(filter) {
+//   const URL = "http://localhost:3001/api/pokemones";
+//   return async (dispatch) => {
+//     await fetch(URL)
+//       .then((res) => res.json())
+//       .then((data) => {
+//         let result = [];
+//         if (filter === "database") {
+//           let toApiTypes = [];
+//           console.log(data);
+//           result = data.filter((e) => e.fromDb === true);
+//           console.log("result from 1er if", result);
+//           result.map((e) => {
+//             e.types.map((e) => toApiTypes.push(e.name));
+//             e.types = toApiTypes;
+//           });
+//           //result.map((e)=> e.types = toApiTypes)
+
+//           if (!result.length) window.alert("No hay pokemones en BD");
+//           console.log("RESULT FILTER DB API:", result);
+//         } else if (filter === "api") {
+//           result = data.filter((e) => e.fromDb === false);
+//         } else {
+//           data.map((e) => {
+//             if (e.fromDb === true && e.types.find((n) => n.name === filter)) {
+//               result.push(e);
+//             }
+//             if (e.types.includes(filter)) result.push(e);
+//           });
+//         }
+
+//         if (result) {
+//           dispatch({
+//             type: FILTER_POKEMONES,
+//             payload: result,
+//           });
+//         }
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   };
+// }
 
 export function addTypes(type) {
   return async (dispatch) => {
     await fetch("http://localhost:3001/api/types/getTypes")
       .then((res) => res.json())
       .then((data) => {
+
         let result = [];
         data.map((e) => result.push(e.name));
-        console.log("RESULT: ", result);
+        
         dispatch({
           type: ADD_TYPES,
           payload: result,
@@ -194,7 +179,7 @@ export function getPokeById(id) {
             toApiTypes.push(e.name);
           });
           data.types = toApiTypes;
-          console.log("DATA API TYPES ID:", data)
+          console.log("DATA API TYPES ID:", data);
         }
         dispatch({
           type: DETAIL_POKEMONES,
@@ -212,9 +197,8 @@ export function getType(id, pokes) {
   pokes.map((e) => {
     if (id === e.id) typ.push(e.types);
   });
-  console.log(typ)
+  //console.log(typ)
   return typ;
-  
 }
 
 //ADD TYPES
