@@ -40,11 +40,11 @@ export default function reducer(state = initialState, { type, payload }) {
     case SORT_POKEMONES_ALF:
       let orderedPokemones;
       if (payload === AZ) {
-        orderedPokemones = state.filteredPokemones.sort((a, b) =>
+        orderedPokemones = state.pokemones.sort((a, b) =>
           a.name > b.name ? 1 : a.name < b.name ? -1 : 0
         );
       } else if (payload === ZA) {
-        orderedPokemones = state.filteredPokemones.sort((a, b) =>
+        orderedPokemones = state.pokemones.sort((a, b) =>
           a.name > b.name ? -1 : a.name < b.name ? 1 : 0
         );
       }

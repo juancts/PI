@@ -15,7 +15,7 @@ import {
 export function getAllPoke() {
   let toApiTypes = [];
   return async (dispatch) => {
-    await fetch("http://localhost:3001/api/pokemones/")
+    await fetch("http://localhost:3001/api/pokemons/")
       .then((res) => res.json())
       .then((data) => {
         console.log("DESDE ACTIONS:", data);
@@ -43,8 +43,9 @@ export function getAllPoke() {
 }
 
 export function searchPokemones(search) {
-  return async (dispatch) => {
-    await fetch(`http://localhost:3001/api/pokemones/?name=${search}`)
+  search = search.toLowerCase();
+  return (dispatch) => {
+       fetch(`http://localhost:3001/api/pokemons/?name=${search}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("SEARCH FUNCION ACTION:", data);
@@ -122,7 +123,7 @@ export function addTypes(type) {
 
 export function getPokeById(id) {
   return async (dispatch) => {
-    await fetch(`http://localhost:3001/api/pokemones/${id}`)
+    await fetch(`http://localhost:3001/api/pokemons/${id}`)
       .then((res) => res.json())
       .then((data) => {
         let toApiTypes = [];

@@ -10,7 +10,10 @@ import Details from "./components/Details/Details";
 
 
 
+
 function App() {
+
+ 
   return (
       <BrowserRouter>
       <Switch>
@@ -24,6 +27,7 @@ function App() {
         </BrowserRouter>
     
   )
+
 }
 
 export default App;

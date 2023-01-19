@@ -13,6 +13,19 @@
     padding-top: 50px;
 }
 
+.title{
+    color: aliceblue;
+}
+
+.a {
+    color: #fff;
+    text-decoration: none;
+  }
+  .a:hover {
+    color: white;
+    cursor:pointer;
+  }
+
 .child{
     display: flex;
     justify-content: center;

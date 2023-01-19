@@ -3,7 +3,6 @@ import styles from "./Card.module.css";
 
 export default function Card(props) {
   let types = props.type[0].map((e) => e);
-  
 
   return (
     <div className={styles.container}>
@@ -11,10 +10,10 @@ export default function Card(props) {
         <button>✔</button>
       </div>
       <Link to={`/details/${props.id}`}>
-         <div className={styles.title}>
+        <div className={styles.title}>
           <h2>{props.name.toUpperCase()}</h2>
           <h4>Tipos:</h4>
-          </div>
+        </div>
         <div className={styles.data}>
           {types.map((e) => (
             <p>{e}</p>
@@ -26,3 +25,6 @@ export default function Card(props) {
     </div>
   );
 }
+
+
+export { types };

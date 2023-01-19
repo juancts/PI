@@ -67,23 +67,33 @@ export default function AddPoke() {
   }
 
   function handleChange(e) {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
-    });
-    console.log("INPUTS TYPES:", inputs.types);
+    // if(e.target.name === "name") {
+    //   let name = e.target.value
+    //   setInputs({
+    //     ...inputs,
+    //     [e.target.name]: name.toLowerCase(),
+    //   })
+    // }else{
+      setInputs({
+        ...inputs,
+        [e.target.name]: e.target.value,
+      });
+      
+   //  }   
+    
     setErrors(
       validate({
         ...inputs,
         [e.target.name]: e.target.value,
       })
     );
-    console.log(inputs);
+    
   }
 
   async function postPokemons(inputs){
     try {
-     let poke = await axios.post("http://localhost:3001/api/pokemones/", inputs)
+      inputs.name = inputs.name.toLowerCase()
+    let poke = await axios.post("http://localhost:3001/api/pokemones/", inputs)
      window.alert("Muchas gracias, completado correctamente");
      console.log("POKE FROM CREATE POKE:", poke.data)
     } catch (error) {
